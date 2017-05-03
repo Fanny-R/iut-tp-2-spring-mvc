@@ -9,13 +9,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/")
 public class RootController {
 
-  @RequestMapping("/")
+  @RequestMapping(value = "/", method = RequestMethod.GET)
   public ModelAndView test(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
     ModelAndView mav = new ModelAndView();
     mav.addObject("titre", "IUT");
@@ -23,14 +25,23 @@ public class RootController {
 
     List<HttpHeader> headerList  = new ArrayList<>();
 
+
+
     for (Map.Entry<String, List<String> > header : headers.entrySet()) {
      headerList.add(new HttpHeader(header.getKey(), header.getValue().toString()));
     }
-   mav.addObject("header", headerList);
+    mav.addObject("header", headerList);
 
     mav.setViewName("template");
     return mav;
   }
+
+  @RequestMapping(value = "/", method = RequestMethod.POST)
+  @ResponseBody
+  public String post() {
+    return "OK";
+  }
+
 
   private class HttpHeader {
     private String name;
