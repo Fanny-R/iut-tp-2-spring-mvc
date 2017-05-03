@@ -45,8 +45,14 @@ public class RootController {
 
   @RequestMapping(value = "/user", method = RequestMethod.GET)
   @ResponseBody
-  public User get(@RequestParam("nom") String nom, @RequestParam("prenom") String prenom) {
+  public User getUser(@RequestParam("nom") String nom, @RequestParam("prenom") String prenom) {
     return new User(nom, prenom);
+  }
+
+  @RequestMapping(value = "/browser", method = RequestMethod.GET)
+  @ResponseBody
+  public UserAgent getBrowser(@RequestHeader(value = "User-Agent")String userAgent) {
+    return new UserAgent(userAgent);
   }
 
   private class HttpHeader {
@@ -80,16 +86,35 @@ public class RootController {
       return this.nom;
     }
 
-    public void setNom(String nom) {
-      this.nom = nom;
-    }
-
     public String getPrenom() {
       return this.prenom;
     }
+  }
 
-    public void setPrenom(String prenom) {
-      this.prenom = prenom;
+  public class UserAgent {
+    private String userAgent;
+
+    public UserAgent(String userAgent) {
+      this.userAgent = userAgent;
+    }
+
+    public String getNom() {
+      switch (userAgent) {
+        case "AppleWebKit/537.75.14":
+          return "Safari";
+        case "Firefox/40.1":
+          return "Firefox";
+        case "MSIE":
+          return "Internet Explorer";
+        case "Chrome/41.0.2228.0":
+          return "Chrome";
+        default :
+          return "autre";
+      }
+    }
+
+    public String getUserAgent() {
+      return this.userAgent;
     }
   }
 
