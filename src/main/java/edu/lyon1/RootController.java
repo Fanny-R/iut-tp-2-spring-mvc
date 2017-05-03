@@ -41,6 +41,11 @@ public class RootController {
   public String post() {
     return "OK";
   }
+  @RequestMapping(value = "/user", method = RequestMethod.GET)
+  @ResponseBody
+  public String get() {
+    return "Moi";
+  }
 
 
   private class HttpHeader {
